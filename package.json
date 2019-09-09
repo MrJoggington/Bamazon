@@ -1,0 +1,24 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "dependencies": {
+    "inquirer": "6.5.1",
+    "mysql": "2.17.1"
+  },
+  "main": "ama.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrJoggington/Bamazon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MrJoggington/Bamazon/issues"
+  },
+  "homepage": "https://github.com/MrJoggington/Bamazon#readme",
+  "keywords": [],
+  "description": ""
+}
