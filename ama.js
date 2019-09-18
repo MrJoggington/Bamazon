@@ -4,7 +4,7 @@ var mysql = require("mysql")
 var connection = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "AllenS#1107",
+    password: "Smitty#1",
     database: "bamazon"
 });
 connection.connect(function (err) {
@@ -36,6 +36,7 @@ function bam() {
 function homeStorefront() {
     connection.query("SELECT * FROM products WHERE department_name= 'Home'", function (err, results) {
         if (err) throw err;
+
         inquirer.prompt([
             {
                 name: "homeStr",
@@ -45,168 +46,182 @@ function homeStorefront() {
                     for (var i = 0; i < results.length; i++) {
                         homeArray.push(results[i].product_name);
                     }
-                    return homeArray
+                    return homeArray;
                 },
                 message: "What would you like to buy today?"
             }
         ])
             .then(function (answer) {
                 for (var i = 0; i < results.length; i++) {
-                    console.log(i, results[i])
-                    if (results[i].product_name === answer.homeStr) {
-                        connection.query(
-                            "UPDATE products SET ? WHERE ?",
-                            [
-                                {
-                                    stock_quantity: 199
-                                },
-                                {
-                                    item_id: answer.homeStr
-                                }
-                            ],
-                            function (error) {
-                                if (error) throw err;
+                    if (results[i].product_name == answer.homeStr) {
+                        var product = answer.homeStr;
+                        var id = i
+                        inquirer.prompt(
+                            {
+                                name: "stuff",
+                                type: "number",
+                                message: "how many you want to buy",
 
-                                console.log("purchase successful")
+                            }
+                        ).then(function (ans) {
+                            if ((results[id].stock_quantity - ans.stuff) > 0) {
+                                connection.query("UPDATE products SET stock_quantity='" + (results[id].stock_quantity - ans.stuff) + "'WHERE product_name='" + product + "'", function (err, res2) {
+                                    console.log("PRODUCT BOUGHT")
+                                    console.log(results)
+
+                                    bam()
+                                })
                             }
 
-                        )
+                        })
+
                     }
                 }
-                bam()
-            })
-    })
 
-}
-function autoStorefront() {
-    connection.query("SELECT * FROM products WHERE department_name= 'Auto'", function (err, results) {
-        if (err) throw err;
-        inquirer.prompt([
-            {
-                name: "autoStr",
-                type: "rawlist",
-                choices: function () {
-                    var autoArray = [];
-                    for (var i = 0; i < results.length; i++) {
-                        autoArray.push(results[i].product_name);
-                    }
-                    return autoArray
-                },
-                message: "What would you like to buy today?"
-            }
-        ])
-            .then(function (answer) {
-                for (var i = 0; i < results.length; i++) {
-                    console.log(i, results[i])
-                    if (results[i].product_name === answer.autoStr) {
-                        connection.query(
-                            "UPDATE products SET ? WHERE ?",
-                            [
-                                {
-                                    stock_quantity: 199
-                                },
-                                {
-                                    item_id: answer.autoStr.item_id
-                                }
-                            ],
-                            function (error) {
-                                if (error) throw err;
-
-                                console.log("purchase successful")
-                            }
-
-                        )
-                    }
-                }
-                bam()
             })
     })
 }
 function foodStorefront() {
     connection.query("SELECT * FROM products WHERE department_name= 'Food'", function (err, results) {
         if (err) throw err;
+
         inquirer.prompt([
             {
-                name: "foodStr",
+                name: "homeStr",
                 type: "rawlist",
                 choices: function () {
-                    var foodArray = [];
+                    var homeArray = [];
                     for (var i = 0; i < results.length; i++) {
-                        foodArray.push(results[i].product_name);
+                        homeArray.push(results[i].product_name);
                     }
-                    return foodArray
+                    return homeArray;
                 },
                 message: "What would you like to buy today?"
             }
         ])
             .then(function (answer) {
                 for (var i = 0; i < results.length; i++) {
-                    console.log(i, results[i])
-                    if (results[i].product_name === answer.foodStr) {
-                        connection.query(
-                            "UPDATE products SET ? WHERE ?",
-                            [
-                                {
-                                    stock_quantity: 199
-                                },
-                                {
-                                    item_id: answer.foodStr.item_id
-                                }
-                            ],
-                            function (error) {
-                                if (error) throw err;
+                    if (results[i].product_name == answer.homeStr) {
+                        var product = answer.homeStr;
+                        var id = i
+                        inquirer.prompt(
+                            {
+                                name: "stuff",
+                                type: "number",
+                                message: "how many you want to buy",
 
-                                console.log("purchase successful")
+                            }
+                        ).then(function (ans) {
+                            if ((results[id].stock_quantity - ans.stuff) > 0) {
+                                connection.query("UPDATE products SET stock_quantity=" + (results[id].stock_quantity - ans.stuff) + "WHERE product_name=" + product, function (err, res2) {
+                                    console.log("PRODUCT BOUGHT")
+                                    console.log(results)
+
+                                    bam()
+                                })
                             }
 
-                        )
+                        })
+
                     }
                 }
-                bam()
+
+            })
+    })
+}
+function autoStorefront() {
+    connection.query("SELECT * FROM products WHERE department_name= 'auto'", function (err, results) {
+        if (err) throw err;
+
+        inquirer.prompt([
+            {
+                name: "homeStr",
+                type: "rawlist",
+                choices: function () {
+                    var homeArray = [];
+                    for (var i = 0; i < results.length; i++) {
+                        homeArray.push(results[i].product_name);
+                    }
+                    return homeArray;
+                },
+                message: "What would you like to buy today?"
+            }
+        ])
+            .then(function (answer) {
+                for (var i = 0; i < results.length; i++) {
+                    if (results[i].product_name == answer.homeStr) {
+                        var product = answer.homeStr;
+                        var id = i
+                        inquirer.prompt(
+                            {
+                                name: "stuff",
+                                type: "number",
+                                message: "how many you want to buy",
+
+                            }
+                        ).then(function (ans) {
+                            if ((results[id].stock_quantity - ans.stuff) > 0) {
+                                connection.query("UPDATE products SET stock_quantity=" + (results[id].stock_quantity - ans.stuff) + "WHERE product_name=" + product, function (err, res2) {
+                                    console.log("PRODUCT BOUGHT")
+                                    console.log(results)
+
+                                    bam()
+                                })
+                            }
+
+                        })
+
+                    }
+                }
+
             })
     })
 }
 function healthStorefront() {
     connection.query("SELECT * FROM products WHERE department_name= 'Health'", function (err, results) {
         if (err) throw err;
+
         inquirer.prompt([
             {
-                name: "healthStr",
+                name: "homeStr",
                 type: "rawlist",
                 choices: function () {
-                    var healthArray = [];
+                    var homeArray = [];
                     for (var i = 0; i < results.length; i++) {
-                        healthArray.push(results[i].product_name);
+                        homeArray.push(results[i].product_name);
                     }
-                    return healthArray
+                    return homeArray;
                 },
                 message: "What would you like to buy today?"
             }
         ])
             .then(function (answer) {
                 for (var i = 0; i < results.length; i++) {
-                    console.log(i, results[i])
-                    if (results[i].product_name === answer.healthStr) {
-                        connection.query(
-                            "UPDATE products SET ? WHERE ?",
-                            [
-                                {
-                                    stock_quantity: 199
-                                },
-                                {
-                                    item_id: answer.healthStr.item_id
-                                }
-                            ],
-                            function (error) {
-                                if (error) throw err;
+                    if (results[i].product_name == answer.homeStr) {
+                        var product = answer.homeStr;
+                        var id = i
+                        inquirer.prompt(
+                            {
+                                name: "stuff",
+                                type: "number",
+                                message: "how many you want to buy",
 
-                                console.log("purchase successful")
+                            }
+                        ).then(function (ans) {
+                            if ((results[id].stock_quantity - ans.stuff) > 0) {
+                                connection.query("UPDATE products SET stock_quantity=" + (results[id].stock_quantity - ans.stuff) + "WHERE product_name=" + product, function (err, res2) {
+                                    console.log("PRODUCT BOUGHT")
+                                    console.log(results)
+
+                                    bam()
+                                })
                             }
 
-                        )
+                        })
+
                     }
                 }
-                bam()
+
             })
     })
 }
