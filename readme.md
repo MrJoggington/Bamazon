@@ -1,13 +1,19 @@
 # Step one:
-![image one](./firststep.png)
+## Pick a department
+![image one](firststep.png)
 
 
 # Step two:
-![image two](./secondstep.png)
+## Pick an Item to buy from said department
+![image two](secstep.png)
 
 
 # Step three:
-![image two](./thirdstep.png)
+## give a value
+![image two](thirdstep.png)
 
 # Final step:
-![image 4](./laststep.png)
+## Laugh at the fact that the stock doesn't change
+![image 4](laststep.png)
+
+# Do it all over again.
